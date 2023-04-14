@@ -7,11 +7,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/mattermost/mattermost-load-test-ng/loadtest/user"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/graph-gophers/graphql-go"
-	"github.com/mattermost/mattermost-load-test-ng/loadtest/user"
 	"github.com/mattermost/mattermost-server/server/v8/model"
 )
 
@@ -32,6 +34,22 @@ func (ue *UserEntity) SignUp(email, username, password string) error {
 	return ue.store.SetUser(newUser)
 }
 
+func (ue *UserEntity) generateCognitoToken(user *model.User) error {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"cognito:username": user.Username,
+		"origin_jti":       user.Id,
+		"auth_time":        time.Now().Unix(),
+		"exp":              time.Now().Add(time.Hour * 1).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte("dumpSecret"))
+	if err != nil {
+		return err
+	}
+	ue.client.AuthToken = tokenString
+	return nil
+}
+
 // Login logs the user in. It authenticates a user and starts a new session.
 func (ue *UserEntity) Login() error {
 	user, err := ue.getUserFromStore()
@@ -41,6 +59,10 @@ func (ue *UserEntity) Login() error {
 
 	loggedUser, _, err := ue.client.Login(user.Email, user.Password)
 	if err != nil {
+		return err
+	}
+
+	if err = ue.generateCognitoToken(loggedUser); err != nil {
 		return err
 	}
 
