@@ -7,11 +7,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/mattermost/mattermost-load-test-ng/loadtest/user"
 	"io"
 	"net/http"
 	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/mattermost/mattermost-load-test-ng/loadtest/user"
 
 	"github.com/graph-gophers/graphql-go"
 	"github.com/mattermost/mattermost-server/server/v8/model"
@@ -39,7 +40,7 @@ func (ue *UserEntity) generateCognitoToken(user *model.User) error {
 		"cognito:username": user.Username,
 		"origin_jti":       user.Id,
 		"auth_time":        time.Now().Unix(),
-		"exp":              time.Now().Add(time.Hour * 1).Unix(),
+		"exp":              time.Now().Add(time.Hour * 1000000).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte("dumpSecret"))

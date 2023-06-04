@@ -2,9 +2,10 @@ FROM golang:1.20-alpine3.18 as builder
 
 WORKDIR /bic
 
-COPY ./ ./
-
+COPY go.* ./
 RUN go mod tidy
+
+COPY ./ ./
 RUN go build -o ./bin/ltcoordinator ./cmd/ltcoordinator
 RUN go build -o ./bin/ltapi ./cmd/ltapi
 
