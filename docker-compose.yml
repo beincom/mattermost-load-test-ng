@@ -1,0 +1,17 @@
+version: "3.4"
+
+services:
+  ltcoordinator:
+    build:
+      context: .
+      dockerfile: ltcoordinator.Dockerfile
+    deploy:
+      replicas: 5
+    networks:
+      - bic-chat-nwk
+    volumes:
+      - "./config:/bic/config"
+
+networks:
+  bic-chat-nwk:
+    driver: bridge

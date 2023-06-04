@@ -22,6 +22,7 @@ require (
 )
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.0.0-rc.2
 	github.com/graph-gophers/graphql-go v1.5.1-0.20230110080634-edea822f558a
 	github.com/vmihailenco/msgpack/v5 v5.3.5
 )
@@ -43,7 +44,6 @@ require (
 	github.com/francoispqt/gojay v1.2.13 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
-	github.com/golang-jwt/jwt/v5 v5.0.0-rc.2 // indirect
 	github.com/golang-migrate/migrate/v4 v4.15.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
