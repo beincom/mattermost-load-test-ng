@@ -74,7 +74,7 @@ func (c *SimpleController) Run() {
 
 	initActions := []UserAction{
 		{
-			run: control.SignUp,
+			run: control.LoginOrSignUp,
 		},
 		{
 			run: func(u user.User) control.UserActionResponse {

@@ -50,6 +50,15 @@ func SignUp(u user.User) UserActionResponse {
 	return UserActionResponse{Info: fmt.Sprintf("signed up as %s", username)}
 }
 
+// SignUp signs up the given user to the server.
+func LoginOrSignUp(u user.User) UserActionResponse {
+	resp := Login(u)
+	if resp.Err != nil {
+		return SignUp(u)
+	}
+	return resp
+}
+
 // Login authenticates the user with the server and fetches teams, users and
 // channels that are related with the user.
 func Login(u user.User) UserActionResponse {

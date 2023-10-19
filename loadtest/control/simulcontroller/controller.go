@@ -116,134 +116,76 @@ func (c *SimulController) Run() {
 		GraphQLEnabled: c.user.Store().ClientConfig()["FeatureFlagGraphQL"] == "true",
 	}
 
+	rate := float64(1)
+
 	actions := []userAction{
 		{
 			run:       switchChannel,
-			frequency: 4,
+			frequency: 4 / rate,
 		},
 		{
 			run:       c.switchTeam,
-			frequency: 3,
+			frequency: 3 / rate,
 		},
 		{
 			run:       c.scrollChannel,
-			frequency: 2,
+			frequency: 2 / rate,
 		},
 		{
 			run:       openDirectOrGroupChannel,
-			frequency: 2,
+			frequency: 2 / rate,
 		},
 		{
 			run:       unreadCheck,
-			frequency: 1.5,
+			frequency: 1.5 / rate,
 		},
 		{
 			run:       c.createPost,
-			frequency: 1.5,
-		},
-		{
-			run:       c.joinChannel,
-			frequency: 0.8,
+			frequency: 3 / rate,
 		},
 		{
 			run:       c.searchChannels,
-			frequency: 0.5,
+			frequency: 0.5 / rate,
 		},
 		{
 			run:       c.addReaction,
-			frequency: 0.5,
+			frequency: 0.5 / rate,
 		},
 		{
 			run:       c.fullReload,
-			frequency: 0.2,
+			frequency: 0.2 / rate,
 		},
 		{
 			run:       c.createDirectChannel,
-			frequency: 0.25,
-		},
-		{
-			run:       c.logoutLogin,
-			frequency: 0.1,
+			frequency: 0.25 / rate,
 		},
 		{
 			run:       searchUsers,
-			frequency: 0.1,
+			frequency: 0.1 / rate,
 		},
 		{
 			run:       searchPosts,
-			frequency: 0.1,
-		},
-		{
-			run:       c.createPostReminder,
-			frequency: 0.002,
+			frequency: 0.1 / rate,
 		},
 		{
 			run:       editPost,
-			frequency: 0.1,
+			frequency: 0.1 / rate,
 		},
 		{
 			run:       deletePost,
-			frequency: 0.06,
-		},
-		{
-			run:       c.updateCustomStatus,
-			frequency: 0.05,
-		},
-		{
-			run:       c.removeCustomStatus,
-			frequency: 0.05,
-		},
-		{
-			run:       c.createSidebarCategory,
-			frequency: 0.06,
-		},
-		{
-			run:       c.updateSidebarCategory,
-			frequency: 0.06,
-		},
-		{
-			run:       searchGroupChannels,
-			frequency: 0.1,
-		},
-		{
-			run:       c.createGroupChannel,
-			frequency: 0.05,
-		},
-		{
-			run:       createPrivateChannel,
-			frequency: 0.022,
-		},
-		{
-			run:       control.CreatePublicChannel,
-			frequency: 0.011,
-		},
-		{
-			run:       c.viewGlobalThreads,
-			frequency: 5.4,
+			frequency: 0.06 / rate,
 		},
 		{
 			run:       c.followThread,
-			frequency: 0.041,
+			frequency: 0.041 / rate,
 		},
 		{
 			run:       c.unfollowThread,
-			frequency: 0.055,
+			frequency: 0.055 / rate,
 		},
 		{
 			run:       c.viewThread,
-			frequency: 4.8,
-		},
-		{
-			run:       c.markAllThreadsInTeamAsRead,
-			frequency: 0.013,
-		},
-		{
-			run:       c.updateThreadRead,
-			frequency: 1.17,
-		},
-		{
-			run:       c.getInsights,
-			frequency: 0.011,
+			frequency: 4.8 / rate,
 		},
 	}
 
