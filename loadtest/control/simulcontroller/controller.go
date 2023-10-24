@@ -116,77 +116,183 @@ func (c *SimulController) Run() {
 		GraphQLEnabled: c.user.Store().ClientConfig()["FeatureFlagGraphQL"] == "true",
 	}
 
-	rate := float64(1)
-
 	actions := []userAction{
 		{
 			run:       switchChannel,
-			frequency: 4 / rate,
+			frequency: 4,
 		},
 		{
 			run:       c.switchTeam,
-			frequency: 3 / rate,
+			frequency: 3,
 		},
 		{
 			run:       c.scrollChannel,
-			frequency: 2 / rate,
+			frequency: 2,
 		},
 		{
 			run:       openDirectOrGroupChannel,
-			frequency: 2 / rate,
+			frequency: 2,
 		},
 		{
 			run:       unreadCheck,
-			frequency: 1.5 / rate,
+			frequency: 1.5,
 		},
 		{
 			run:       c.createPost,
-			frequency: 3 / rate,
+			frequency: 1.5,
+		},
+		{
+			run:       c.joinChannel,
+			frequency: 0.8,
 		},
 		{
 			run:       c.searchChannels,
-			frequency: 0.5 / rate,
+			frequency: 0.5,
 		},
 		{
 			run:       c.addReaction,
-			frequency: 0.5 / rate,
+			frequency: 0.5,
 		},
 		{
 			run:       c.fullReload,
-			frequency: 0.2 / rate,
+			frequency: 0.2,
 		},
 		{
 			run:       c.createDirectChannel,
-			frequency: 0.25 / rate,
+			frequency: 0.25,
+		},
+		{
+			run:       c.logoutLogin,
+			frequency: 0.1,
 		},
 		{
 			run:       searchUsers,
-			frequency: 0.1 / rate,
+			frequency: 0.1,
 		},
 		{
 			run:       searchPosts,
-			frequency: 0.1 / rate,
+			frequency: 0.1,
+		},
+		{
+			run:       c.createPostReminder,
+			frequency: 0.002,
 		},
 		{
 			run:       editPost,
-			frequency: 0.1 / rate,
+			frequency: 0.1,
 		},
 		{
 			run:       deletePost,
-			frequency: 0.06 / rate,
+			frequency: 0.06,
+		},
+		{
+			run:       c.updateCustomStatus,
+			frequency: 0.05,
+		},
+		{
+			run:       c.removeCustomStatus,
+			frequency: 0.05,
+		},
+		{
+			run:       c.createSidebarCategory,
+			frequency: 0.06,
+		},
+		{
+			run:       c.updateSidebarCategory,
+			frequency: 0.06,
+		},
+		{
+			run:       searchGroupChannels,
+			frequency: 0.1,
+		},
+		{
+			run:       c.createGroupChannel,
+			frequency: 0.05,
+		},
+		{
+			run:       createPrivateChannel,
+			frequency: 0.022,
+		},
+		{
+			run:       control.CreatePublicChannel,
+			frequency: 0.011,
+		},
+		{
+			run:       c.viewGlobalThreads,
+			frequency: 5.4,
 		},
 		{
 			run:       c.followThread,
-			frequency: 0.041 / rate,
+			frequency: 0.041,
 		},
 		{
 			run:       c.unfollowThread,
-			frequency: 0.055 / rate,
+			frequency: 0.055,
 		},
 		{
 			run:       c.viewThread,
-			frequency: 4.8 / rate,
+			frequency: 4.8,
 		},
+		{
+			run:       c.markAllThreadsInTeamAsRead,
+			frequency: 0.013,
+		},
+		{
+			run:       c.updateThreadRead,
+			frequency: 1.17,
+		},
+		{
+			run:       c.getInsights,
+			frequency: 0.011,
+		},
+	}
+
+	mapActions := map[string]any{
+		"switchChannel":               switchChannel,
+		"switchTeam":                  c.switchTeam,
+		"scrollChannel":               c.scrollChannel,
+		"openDirectOrGroupChannel":    openDirectOrGroupChannel,
+		"unreadCheck":                 unreadCheck,
+		"createPost":                  c.createPost,
+		"joinChannel":                 c.joinChannel,
+		"searchChannels":              c.searchChannels,
+		"addReaction":                 c.addReaction,
+		"fullReload":                  c.fullReload,
+		"createDirectChannel":         c.createDirectChannel,
+		"logoutLogin":                 c.logoutLogin,
+		"searchUsers":                 searchUsers,
+		"searchPosts":                 searchPosts,
+		"createPostReminder":          c.createPostReminder,
+		"editPost":                    editPost,
+		"deletePost":                  deletePost,
+		"updateCustomStatus":          c.updateCustomStatus,
+		"removeCustomStatus":          c.removeCustomStatus,
+		"createSidebarCategory":       c.createSidebarCategory,
+		"updateSidebarCategory":       c.updateSidebarCategory,
+		"searchGroupChannels":         searchGroupChannels,
+		"createGroupChannel":          c.createGroupChannel,
+		"createPrivateChannel":        createPrivateChannel,
+		"control.CreatePublicChannel": control.CreatePublicChannel,
+		"viewGlobalThreads":           c.viewGlobalThreads,
+		"followThread":                c.followThread,
+		"unfollowThread":              c.unfollowThread,
+		"viewThread":                  c.viewThread,
+		"markAllThreadsInTeamAsRead":  c.markAllThreadsInTeamAsRead,
+		"updateThreadRead":            c.updateThreadRead,
+		"getInsights":                 c.getInsights,
+	}
+
+	if len(c.config.Actions) > 0 {
+		actions = make([]userAction, len(c.config.Actions))
+		for i, action := range c.config.Actions {
+			if _, ok := mapActions[action.Name]; !ok {
+				return
+			}
+			actions[i] = userAction{
+				run:       mapActions[action.Name].(func(user.User) control.UserActionResponse),
+				frequency: action.Frequency,
+			}
+		}
 	}
 
 	for {

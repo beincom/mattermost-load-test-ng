@@ -6,7 +6,17 @@ services:
       context: .
       dockerfile: ltcoordinator.Dockerfile
     deploy:
-      replicas: 5
+      replicas: 4
+    networks:
+      - bic-chat-nwk
+    volumes:
+      - "./config:/bic/config"
+  ltapi:
+    build:
+      context: .
+      dockerfile: ltapi.Dockerfile
+    deploy:
+      replicas: 1
     networks:
       - bic-chat-nwk
     volumes:

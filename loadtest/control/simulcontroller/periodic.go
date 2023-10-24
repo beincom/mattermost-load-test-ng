@@ -12,11 +12,11 @@ const (
 	getUsersStatusByIdsInterval = 60 * time.Second
 )
 
-func (c *SimulController) periodicActions(wg *sync.WaitGroup) {
+func (c *SimulController) periodicActions(wg *sync.WaitGroup, getUsersStatusByIdsInterval float64) {
 	defer wg.Done()
 	for {
 		select {
-		case <-time.After(getUsersStatusByIdsInterval):
+		case <-time.After(time.Duration(getUsersStatusByIdsInterval) * time.Second):
 			if resp := c.getUsersStatuses(); resp.Err != nil {
 				c.status <- c.newErrorStatus(resp.Err)
 			} else {

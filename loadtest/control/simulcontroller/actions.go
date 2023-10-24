@@ -45,7 +45,7 @@ func (c *SimulController) connect() error {
 		}
 	}()
 	go c.wsEventHandler(c.wg)
-	go c.periodicActions(c.wg)
+	go c.periodicActions(c.wg, c.config.GetStatusActionsInterval)
 	return nil
 }
 

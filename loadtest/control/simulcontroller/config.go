@@ -7,6 +7,11 @@ import (
 	"github.com/mattermost/mattermost-load-test-ng/defaults"
 )
 
+type Action struct {
+	Name      string
+	Frequency float64
+}
+
 // Config holds information needed to run a SimulController.
 type Config struct {
 	// The minium amount of time (in milliseconds) the controlled users
@@ -20,6 +25,9 @@ type Config struct {
 	PercentUrgentPosts float64 `default:"0.001" validate:"range:[0,1]"`
 	// The percentage of all posts that are replies
 	PercentReplies float64 `default:"0.18" validate:"range:[0,1]"`
+
+	Actions                  []Action `default:"[]"`
+	GetStatusActionsInterval float64  `default:"20"`
 }
 
 // ReadConfig reads the configuration file from the given string. If the string
@@ -27,7 +35,7 @@ type Config struct {
 func ReadConfig(configFilePath string) (*Config, error) {
 	var cfg Config
 
-	if err := defaults.ReadFromJSON(configFilePath, "./config/simulcontoller.json", &cfg); err != nil {
+	if err := defaults.ReadFromJSON(configFilePath, "./config/simulcontroller.json", &cfg); err != nil {
 		return nil, err
 	}
 
