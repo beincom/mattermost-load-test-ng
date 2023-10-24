@@ -5,13 +5,13 @@ package api
 
 import (
 	"net/http"
-	"net/http/pprof"
 	"sync"
 
 	"github.com/mattermost/mattermost-load-test-ng/performance"
 
 	"github.com/gorilla/mux"
 	"github.com/mattermost/mattermost-server/server/v8/platform/shared/mlog"
+	_ "net/http/pprof"
 )
 
 // api keeps track of the load-test API server state.
@@ -97,11 +97,7 @@ func SetupAPIRouter(coordLog, agentLog *mlog.Logger) *mux.Router {
 	c.HandleFunc("/{id}/stop", a.stopCoordinatorHandler).Methods("POST")
 
 	// Debug endpoint.
-	p := router.PathPrefix("/debug/pprof").Subrouter()
-	p.HandleFunc("/", a.pprofIndexHandler).Methods("GET")
-	p.Handle("/heap", pprof.Handler("heap")).Methods("GET")
-	p.HandleFunc("/profile", pprof.Profile).Methods("GET")
-	p.HandleFunc("/trace", pprof.Trace).Methods("GET")
+	router.PathPrefix("/debug/pprof/").Handler(http.DefaultServeMux)
 
 	// Metrics endpoint.
 	router.Handle("/metrics", a.metrics.Handler())
