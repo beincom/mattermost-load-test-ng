@@ -733,6 +733,10 @@ func (c *SimulController) createPost(u user.User) control.UserActionResponse {
 		return control.UserActionResponse{Err: control.NewUserError(err)}
 	}
 
+	if !isReply && rand.Float64() < c.config.PercentTagAll {
+		message = fmt.Sprintf("@all %s", message)
+	}
+
 	post := &model.Post{
 		Message:   message,
 		ChannelId: channel.Id,

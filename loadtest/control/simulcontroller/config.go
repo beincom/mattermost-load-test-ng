@@ -28,6 +28,7 @@ type Config struct {
 
 	Actions                  []Action `default:"[]"`
 	GetStatusActionsInterval float64  `default:"20"`
+	PercentTagAll            float64  `default:"0.1" validate:"range:[0,1]"`
 }
 
 // ReadConfig reads the configuration file from the given string. If the string
