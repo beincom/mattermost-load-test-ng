@@ -2,8 +2,9 @@ FROM golang:1.20-alpine3.18 as builder
 
 WORKDIR /bic
 
-COPY go.* ./
-RUN go mod tidy
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
 
 COPY ./ ./
 RUN go build -o ./bin/ltcoordinator ./cmd/ltcoordinator
