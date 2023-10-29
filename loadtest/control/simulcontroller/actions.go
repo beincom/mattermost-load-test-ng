@@ -1440,7 +1440,7 @@ func (c *SimulController) viewGlobalThreads(u user.User) control.UserActionRespo
 			Unread:      false,
 			Since:       0,
 			TotalsOnly:  false,
-			ThreadsOnly: true,
+			ThreadsOnly: false,
 		})
 		if err != nil {
 			return control.UserActionResponse{Err: control.NewUserError(err)}
@@ -1492,7 +1492,7 @@ func (c *SimulController) viewGlobalThreads(u user.User) control.UserActionRespo
 			Unread:      true,
 			Since:       0,
 			TotalsOnly:  false,
-			ThreadsOnly: true,
+			ThreadsOnly: false,
 		})
 		if err != nil {
 			return control.UserActionResponse{Err: control.NewUserError(err)}
