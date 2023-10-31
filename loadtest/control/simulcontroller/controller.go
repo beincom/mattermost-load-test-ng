@@ -178,7 +178,7 @@ func (c *SimulController) Run() {
 			frequency: 0.002,
 		},
 		{
-			run:       editPost,
+			run:       c.editPost,
 			frequency: 0.1,
 		},
 		{
@@ -263,7 +263,7 @@ func (c *SimulController) Run() {
 		"searchUsers":                 searchUsers,
 		"searchPosts":                 searchPosts,
 		"createPostReminder":          c.createPostReminder,
-		"editPost":                    editPost,
+		"editPost":                    c.editPost,
 		"deletePost":                  deletePost,
 		"updateCustomStatus":          c.updateCustomStatus,
 		"removeCustomStatus":          c.removeCustomStatus,

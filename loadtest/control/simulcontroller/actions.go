@@ -684,7 +684,7 @@ func (c *SimulController) updateSidebarCategory(u user.User) control.UserActionR
 	return control.UserActionResponse{Info: fmt.Sprintf("updated sidebar categories, ids [%s, %s]", cat1.Id, cat2.Id)}
 }
 
-func editPost(u user.User) control.UserActionResponse {
+func (c *SimulController) editPost(u user.User) control.UserActionResponse {
 	channel, err := u.Store().CurrentChannel()
 	if err != nil {
 		return control.UserActionResponse{Err: control.NewUserError(err)}
@@ -698,7 +698,7 @@ func editPost(u user.User) control.UserActionResponse {
 	}
 
 	isReply := post.RootId != ""
-	message, err := createMessage(u, channel, isReply)
+	message, err := createMessage(u, channel, isReply, rand.Float64() < c.config.PercentPostWithLink)
 	if err != nil {
 		return control.UserActionResponse{Err: control.NewUserError(err)}
 	}
@@ -728,7 +728,7 @@ func (c *SimulController) createPost(u user.User) control.UserActionResponse {
 	isUrgent := !isReply && (rand.Float64() < c.config.PercentUrgentPosts)
 	hasFilesAttached := rand.Float64() < 0.02
 
-	message, err := createMessage(u, channel, isReply)
+	message, err := createMessage(u, channel, isReply, rand.Float64() < c.config.PercentPostWithLink)
 	if err != nil {
 		return control.UserActionResponse{Err: control.NewUserError(err)}
 	}
@@ -1004,7 +1004,7 @@ func getProfileImageForUsers(u user.User, userIds []string) error {
 	return nil
 }
 
-func createMessage(u user.User, channel *model.Channel, isReply bool) (string, error) {
+func createMessage(u user.User, channel *model.Channel, isReply bool, isLink bool) (string, error) {
 	var message string
 	// 10% of messages will contain a mention.
 	if rand.Float64() < 0.10 {
@@ -1019,7 +1019,7 @@ func createMessage(u user.User, channel *model.Channel, isReply bool) (string, e
 	}
 
 	// 10% of messages will contain a link.
-	if rand.Float64() < 0.10 {
+	if isLink {
 		message = control.AddLink(message)
 	}
 
