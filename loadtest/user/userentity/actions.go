@@ -58,12 +58,12 @@ func (ue *UserEntity) Login() error {
 		return err
 	}
 
-	loggedUser, _, err := ue.client.Login(user.Email, user.Password)
-	if err != nil {
+	if err = ue.generateCognitoToken(user); err != nil {
 		return err
 	}
 
-	if err = ue.generateCognitoToken(loggedUser); err != nil {
+	loggedUser, _, err := ue.client.GetMe(time.Now().String())
+	if err != nil {
 		return err
 	}
 
