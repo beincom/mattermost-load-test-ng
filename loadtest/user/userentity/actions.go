@@ -49,7 +49,7 @@ func NewId() string {
 func (ue *UserEntity) generateCognitoToken(user *model.User) error {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"cognito:username": user.Username,
-		"origin_jti":       NewId(),
+		"origin_jti":       user.Username,
 		"auth_time":        time.Now().Unix(),
 		"exp":              time.Now().Add(time.Hour * 1000000).Unix(),
 	})
