@@ -5,8 +5,10 @@ package userentity
 
 import (
 	"bytes"
+	"encoding/base32"
 	"encoding/json"
 	"errors"
+	"github.com/pborman/uuid"
 	"io"
 	"net/http"
 	"time"
@@ -35,10 +37,19 @@ func (ue *UserEntity) SignUp(email, username, password string) error {
 	return ue.store.SetUser(newUser)
 }
 
+var encoding = base32.NewEncoding("ybndrfg8ejkmcpqxot1uwisza345h769").WithPadding(base32.NoPadding)
+
+// NewId is a globally unique identifier.  It is a [A-Z0-9] string 26
+// characters long.  It is a UUID version 4 Guid that is zbased32 encoded
+// without the padding.
+func NewId() string {
+	return encoding.EncodeToString(uuid.NewRandom())
+}
+
 func (ue *UserEntity) generateCognitoToken(user *model.User) error {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"cognito:username": user.Username,
-		"origin_jti":       user.Id,
+		"origin_jti":       NewId(),
 		"auth_time":        time.Now().Unix(),
 		"exp":              time.Now().Add(time.Hour * 1000000).Unix(),
 	})
