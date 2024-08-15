@@ -1,0 +1,19 @@
+{
+    "Actions": [
+        {
+            "ActionId": "CreatePost",
+            "WaitAfterMs": 1000,
+            "RunPeriod": 1
+        },
+        {
+            "ActionId": "AddReaction",
+            "WaitAfterMs": 1000,
+            "RunPeriod": 1
+        },
+        {
+            "ActionId": "CreatePostReply",
+            "WaitAfterMs": 1000,
+            "RunPeriod": 1
+        }
+    ]
+}

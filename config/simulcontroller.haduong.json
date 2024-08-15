@@ -1,0 +1,95 @@
+{
+    "MinIdleTimeMs": 1000,
+    "AvgIdleTimeMs": 21000,
+    "PercentUrgentPosts": 0.001,
+    "PercentReplies": 0.7,
+    "PercentTagAll": 0.4,
+    "PercentPostWithLink": 0.1,
+    "GetStatusActionsInterval": 60,
+    "Actions": [
+        {
+            "Name": "viewGlobalThreads",
+            "frequency": 11.39
+        },
+        {
+            "Name": "scrollChannel",
+            "frequency": 9.17
+        },
+        {
+            "Name": "viewThread",
+            "frequency": 2.59
+        },
+        {
+            "Name": "switchChannel",
+            "frequency": 2.82
+        },
+        {
+            "Name": "searchUsers",
+            "frequency": 0.01
+        },
+        {
+            "Name": "createPost",
+            "frequency": 0.41
+        },
+        {
+            "Name": "addReaction",
+            "frequency": 0.11
+        },
+        {
+            "Name": "switchTeam",
+            "frequency": 2.14
+        },
+        {
+            "Name": "openDirectOrGroupChannel",
+            "frequency": 2.82
+        },
+        {
+            "Name": "unreadCheck",
+            "frequency": 2.14
+        },
+        {
+            "Name": "joinChannel",
+            "frequency": 0.01
+        },
+        {
+            "Name": "searchChannels",
+            "frequency": 0.03
+        },
+        {
+            "Name": "fullReload",
+            "frequency": 0.01
+        },
+        {
+            "Name": "createDirectChannel",
+            "frequency": 0.0011
+        },
+        {
+            "Name": "searchPosts",
+            "frequency": 0.01
+        },
+        {
+            "Name": "editPost",
+            "frequency": 0.007
+        },
+        {
+            "Name": "deletePost",
+            "frequency": 0.0001
+        },
+        {
+            "Name": "updateCustomStatus",
+            "frequency": 0.0001
+        },
+        {
+            "Name": "removeCustomStatus",
+            "frequency": 0.0001
+        },
+        {
+            "Name": "followThread",
+            "frequency": 0.0001
+        },
+        {
+            "Name": "unfollowThread",
+            "frequency": 0.0001
+        }
+    ]
+}
